@@ -22,11 +22,32 @@ return {
     config = function()
       local sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff' },
-        lualine_c = { 'filename' },
-        lualine_x = {},
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_x = {
+          'filename',
+        },
+        lualine_c = {
+
+          '%=',
+          {
+            'harpoon2',
+            icon = '󰀱',
+            indicators = { '1', '2', '3', '4' },
+            active_indicators = { '[1]', '[2]', '[3]', '[4]' },
+            _separator = ' ',
+            no_harpoon = 'Harpoon not loaded',
+          },
+        },
         lualine_y = { 'encoding', 'fileformat', 'filetype' },
-        lualine_z = { 'location', 'progress' },
+        lualine_z = { 'progress' },
+      }
+      local inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { 'filename' },
+        lualine_x = { 'location' },
+        lualine_y = {},
+        lualine_z = {},
       }
 
       require('lualine').setup {
@@ -47,6 +68,7 @@ return {
           globalstatus = true,
         },
         sections = sections,
+        inactive_sections = inactive_sections,
       }
     end,
   },
