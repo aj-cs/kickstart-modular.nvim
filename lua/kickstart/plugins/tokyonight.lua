@@ -10,9 +10,15 @@ return {
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
 
       -- You can configure highlights by doing something like:
+      --vim.cmd.colorscheme 'gruvbox'
+      vim.g.palenight_color_overrides = {
+        black = { gui = '#292D3E', cterm = '0', cterm16 = '0' },
+      }
+
+      -- vim.o.background = 'light'
+      vim.cmd.colorscheme 'duskfox'
       vim.cmd.hi 'Comment gui=none'
     end,
   },
