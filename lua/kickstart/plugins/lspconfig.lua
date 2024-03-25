@@ -1,6 +1,7 @@
 return {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    opts = { inlay_hints = { enabled = true } },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       'williamboman/mason.nvim',
@@ -124,6 +125,26 @@ return {
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      local on_attach = function(client, bufnr)
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        if client.name == 'ruff_lsp' then
+          -- Disable hover in favor of Pyright
+          client.server_capabilities.hoverProvider = false
+        end
+        local function toggle_inlay_hints()
+          if vim.g.inlay_hints_visible then
+            vim.g.inlay_hints_visible = false
+            vim.lsp.inlay_hint(bufnr, false)
+          else
+            if client.server_capabilities.inlayHintProvider then
+              vim.g.inlay_hints_visible = true
+              vim.lsp.inlay_hint(bufnr, true)
+            else
+              print 'no inlay hints available'
+            end
+          end
+        end
+      end
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -137,13 +158,41 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
-        basedpyright = { enabled = false },
+        pyright = {
+          enabled = false,
+          settings = {
+            pyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+            },
+            python = {
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+              },
+            },
+          },
+        },
+        basedpyright = {
+          --enabled = false,
+          on_attach = on_attach,
+          capabilities = capabilities,
+          settings = {
+            disableOrganizeImports = true,
+            basedpyright = {
+              -- Using Ruff's import organizer
+              typeCheckingMode = 'standard',
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+              },
+            },
+          },
+        },
         pylsp = { enabled = false },
         ruff_lsp = {
-          handlers = {
-            ['textDocument/publishDiagnostics'] = function() end,
-          },
+          enabled = true,
+          on_attach = on_attach,
         },
         jdtls = {},
 
@@ -204,4 +253,4 @@ return {
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=2 sts=2 sw=2 ep
