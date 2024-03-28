@@ -155,6 +155,34 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      vim.o.updatetime = 250
+      vim.diagnostic.config { virtual_text = false }
+      vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+        callback = function()
+          if vim.lsp.buf.server_ready() then
+            vim.diagnostic.open_float()
+          end
+        end,
+      })
+
+      -- set up LSP signs
+      for type, icon in pairs {
+        --Error = '',
+        --Warn = '',
+        --Hint = '\u{1F50D}',
+        --Info = '',
+        --Error = '󰅚 ', -- x000f015a
+        --Warn = '󰀪 ', -- x000f002a
+        --Info = '󰋽 ', -- x000f02fd
+        --Hint = '󰌶 ',
+        Error = '',
+        Warn = '',
+        Info = '',
+        Hint = '',
+      } do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+      end
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -173,28 +201,24 @@ return {
             },
           },
         },
+        csharp_ls = { enabled = false },
         basedpyright = {
-          --enabled = false,
-          on_attach = on_attach,
-          capabilities = capabilities,
           settings = {
-            disableOrganizeImports = true,
-            basedpyright = {
-              -- Using Ruff's import organizer
-              typeCheckingMode = 'standard',
-              analysis = {
-                -- Ignore all files for analysis to exclusively use Ruff for linting
-                ignore = { '*' },
+            typeCheckingMode = 'standard',
+          },
+        },
+        pylsp = { enabled = false },
+        ruff = { enabled = false },
+        ruff_lsp = { enabled = false },
+        jdtls = {
+          settings = {
+            java = {
+              format = {
+                enabled = false,
               },
             },
           },
         },
-        pylsp = { enabled = false },
-        ruff_lsp = {
-          enabled = true,
-          on_attach = on_attach,
-        },
-        jdtls = {},
 
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs

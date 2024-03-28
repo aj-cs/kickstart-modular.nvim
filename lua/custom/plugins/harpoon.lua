@@ -22,7 +22,7 @@ return {
       vim.keymap.set('n', '<C-q>', function()
         harpoon:list():select(3)
       end)
-      vim.keymap.set('n', '<C-q>', function()
+      vim.keymap.set('n', '<C-f>', function()
         harpoon:list():select(4)
       end)
       vim.keymap.set('n', '<C-S-P>', function()

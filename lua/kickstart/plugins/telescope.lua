@@ -52,6 +52,7 @@ return {
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local gfh_actions = require('telescope').extensions.git_file_history.actions
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -65,6 +66,13 @@ return {
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
+          },
+          git_file_history = {
+            mappings = {
+              i = { ['<C-g>'] = gfh_actions.open_in_brower },
+
+              n = { ['<C-g>'] = gfh_actions.open_in_brower },
+            },
           },
         },
       }

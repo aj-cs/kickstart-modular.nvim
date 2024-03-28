@@ -27,7 +27,6 @@ return {
         -- is found.
         javascript = { { 'prettierd', 'prettier' } },
         csharp = { 'csharpier' },
-        java = { 'google-java-format' },
         yaml = { 'yamlfix' },
       },
       vim.keymap.set({ 'n', 'v' }, '<leader>l=', function()
