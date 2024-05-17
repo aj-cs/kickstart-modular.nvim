@@ -184,7 +184,12 @@ return {
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
       end
       local servers = {
-        -- clangd = {},
+        clangd = {
+          settings = {
+            'clang',
+            '--fallback-style=webkit',
+          },
+        },
         -- gopls = {},
         pyright = {
           enabled = false,

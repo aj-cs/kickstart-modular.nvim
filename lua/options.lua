@@ -61,3 +61,7 @@ vim.opt.scrolloff = 10
 
 vim.wo.relativenumber = true
 -- vim: ts=2 sts=2 sw=2 et
+vim.opt.autoindent = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
