@@ -30,12 +30,12 @@ return {
 
           '%=',
           {
-            'harpoon2',
+            'grapple',
             icon = '󰀱',
             indicators = { '1', '2', '3', '4' },
             active_indicators = { '[1]', '[2]', '[3]', '[4]' },
             _separator = ' ',
-            no_harpoon = 'Harpoon not loaded',
+            no_harpoon = 'grapple not loaded',
           },
         },
         lualine_y = { 'encoding', 'fileformat', 'filetype' },

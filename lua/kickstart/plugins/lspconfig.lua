@@ -159,9 +159,7 @@ return {
       vim.diagnostic.config { virtual_text = false }
       vim.api.nvim_create_autocmd({ 'CursorHold' }, {
         callback = function()
-          if vim.lsp.buf.server_ready() then
-            vim.diagnostic.open_float()
-          end
+          vim.diagnostic.open_float()
         end,
       })
 
@@ -183,7 +181,32 @@ return {
         local hl = 'DiagnosticSign' .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
       end
+      local function has_telescope()
+        local ok, _ = pcall(require, 'telescope.nvim')
+        return ok
+      end
       local servers = {
+        omnisharp = {
+          handlers = {
+            ['textDocument/definition'] = function(...)
+              return require('omnisharp_extended').handler(...)
+            end,
+          },
+          keys = {
+            {
+              'gd',
+              has_telescope() and function()
+                require('omnisharp_extended').telescope_lsp_definitions()
+              end or function()
+                require('omnisharp_extended').lsp_definitions()
+              end,
+              desc = 'Goto Definition',
+            },
+          },
+          enable_roslyn_analyzers = true,
+          organize_imports_on_format = true,
+          enable_import_completion = true,
+        },
         clangd = {
           settings = {
             'clang',
