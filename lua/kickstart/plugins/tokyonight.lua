@@ -13,12 +13,12 @@ return {
 
       -- You can configure highlights by doing something like:
       --vim.cmd.colorscheme 'gruvbox'
-      vim.g.palenight_color_overrides = {
-        black = { gui = '#292D3E', cterm = '0', cterm16 = '0' },
-      }
+      -- vim.g.palenight_color_overrides = {
+      --   black = { gui = '#292D3E', cterm = '0', cterm16 = '0' },
+      -- }
 
-      -- vim.o.background = 'light'
-      vim.cmd.colorscheme 'duskfox'
+      vim.o.background = 'light'
+      vim.cmd.colorscheme 'everforest'
       vim.cmd.hi 'Comment gui=none'
     end,
   },

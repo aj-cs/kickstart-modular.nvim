@@ -1,0 +1,3 @@
+return {
+  'LunarVim/breadcrumbs.nvim',
+}
